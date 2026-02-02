@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 import sys
 import numpy as np
 
@@ -6,10 +6,16 @@ class VisitSensor:
     """
     Simulate a sesnsor at the entrance of a mall
     """
-    def __init__(self, avg_visit: int, std_visit: int) -> None:
+    def __init__(self,
+                 avg_visit: int,
+                 std_visit: int,
+                 perc_break: float = 0.015,
+                 perc_malfunction: float = 0.035) -> None:
         """Initialize the sensor"""
         self.avg_visit = avg_visit
         self.std_visit = std_visit
+        self.perc_break = perc_break
+        self.perc_malfunction = perc_malfunction
 
     def simulate_visit(self, business_date: date) -> int:
         """ To complete"""
@@ -35,6 +41,23 @@ class VisitSensor:
 
         return np.floor(visit)
 
+    def get_visit_count(self, business_date:date) -> int:
+
+        np.random.seed(seed=business_date.toordinal())
+
+        prob_malfunction = np.random.random()
+
+        if prob_malfunction < self.perc_break:
+            print('break')
+            visit = 0
+
+        visit = self.simulate_visit(business_date)
+
+        if prob_malfunction < self.perc_malfunction:
+            visit *= 0.2
+
+        return visit
+
 
 
 if __name__ == '__main__':
@@ -42,5 +65,12 @@ if __name__ == '__main__':
         year, month, day = [ int(v) for v in sys.argv[1].split('-') ]
     else:
         year, month, day = [2023, 10, 25]
+
     capteur = VisitSensor(1500, 150)
-    print(capteur.simulate_visit(date(year=year, month=month, day=day)))
+
+    init_date = date(2024,1,1)
+    while init_date < date(2026,1,1):
+
+        visit_count = capteur.get_visit_count(init_date)
+        print(init_date, visit_count)
+        init_date += timedelta(days=1)
