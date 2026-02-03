@@ -42,35 +42,31 @@ class VisitSensor:
         return np.floor(visit)
 
     def get_visit_count(self, business_date:date) -> int:
-
         np.random.seed(seed=business_date.toordinal())
 
         prob_malfunction = np.random.random()
+        print(prob_malfunction)
 
         if prob_malfunction < self.perc_break:
             print('break')
-            visit = 0
+            return 0
 
         visit = self.simulate_visit(business_date)
 
         if prob_malfunction < self.perc_malfunction:
+            print('malfunction')
             visit *= 0.2
 
-        return visit
+        return np.floor(visit)
 
 
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
-        year, month, day = [ int(v) for v in sys.argv[1].split('-') ]
+        year, month, day = [int(v) for v in sys.argv[1].split("-")]
     else:
-        year, month, day = [2023, 10, 25]
+        year, month, day = 2023, 10, 25
+    queried_date = date(year, month, day)
 
     capteur = VisitSensor(1500, 150)
-
-    init_date = date(2024,1,1)
-    while init_date < date(2026,1,1):
-
-        visit_count = capteur.get_visit_count(init_date)
-        print(init_date, visit_count)
-        init_date += timedelta(days=1)
+    print(capteur.get_visit_count(queried_date))
