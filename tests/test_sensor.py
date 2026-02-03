@@ -5,23 +5,24 @@ from datetime import date
 
 class TestVisitSensor(unittest.TestCase):
 
-    def test_monday_open(self):
-        visit_sensor = VisitSensor(1200, 300)
-        visit_count = visit_sensor.simulate_visit(date(2026,2,2))
-
-        self.assertFalse(visit_count == -1)
-
-    def test_tuesday_open(self):
-        visit_sensor = VisitSensor(1200, 300)
-        visit_count = visit_sensor.simulate_visit(date(2026,2,3))
-
-        self.assertFalse(visit_count == -1)
+    def test_weekdays_open(self):
+        for test_day in range (2, 8):
+            with self.subTest(i=test_day):
+                visit_sensor = VisitSensor(1200, 300)
+                visit_count = visit_sensor.get_visit_count(date(2023, 10, test_day))
+                self.assertFalse(visit_count == -1)
 
     def test_sunday_closed(self):
         visit_sensor = VisitSensor(1200, 300)
         visit_count = visit_sensor.get_visit_count(date(2026,2,1))
 
         self.assertFalse(visit_count != -1)
+
+    def test_day_off_closed(self):
+        visit_sensor = VisitSensor(1200, 300)
+        visit_count = visit_sensor.get_visit_count(date(2026,1,1))
+
+        self.assertEqual(visit_count, -1)
 
     def test_with_break(self):
         visit_sensor = VisitSensor(1200, 300, perc_break=10)

@@ -1,6 +1,8 @@
 from datetime import date, timedelta
+
 import sys
 import numpy as np
+import holidays
 
 class VisitSensor:
     """
@@ -36,7 +38,7 @@ class VisitSensor:
         elif week_day == 5:
             visit *= 1.35
 
-        elif week_day == 6:
+        elif week_day == 6 or self.check_day_off(business_date):
             visit = -1
 
         return np.floor(visit)
@@ -45,7 +47,6 @@ class VisitSensor:
         np.random.seed(seed=business_date.toordinal())
 
         prob_malfunction = np.random.random()
-        print(prob_malfunction)
 
         if prob_malfunction < self.perc_break:
             print('break')
@@ -58,6 +59,16 @@ class VisitSensor:
             visit *= 0.2
 
         return np.floor(visit)
+
+    @staticmethod
+    def check_day_off(business_date:date) -> bool:
+        fr_holidays = holidays.country_holidays('FR', years=business_date.year)
+
+        if business_date in fr_holidays :
+            return True
+        else :
+            return False
+
 
 
 
