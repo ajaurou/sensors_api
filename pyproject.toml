@@ -9,4 +9,6 @@ dependencies = [
     "holidays>=0.90",
     "numpy>=2.4.1",
     "pytest>=9.0.2",
+    "uvicorn==0.40.0",
+    "fastapi==0.128.0"
 ]
