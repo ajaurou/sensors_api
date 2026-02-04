@@ -39,6 +39,7 @@ class VisitSensor:
             visit *= 1.35
 
         elif week_day == 6 or self.check_day_off(business_date):
+            print('closed')
             visit = -1
 
         return np.floor(visit)
@@ -80,6 +81,5 @@ if __name__ == '__main__':
     queried_date = date(year, month, day)
 
     capteur = VisitSensor(1500, 150)
-    capteur2 = VisitSensor(2000, 300)
     print(capteur.get_visit_count(queried_date))
 

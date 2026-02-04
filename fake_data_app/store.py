@@ -1,7 +1,7 @@
 import numpy as np
 
 from datetime import date
-from sensor import VisitSensor
+from fake_data_app.sensor import VisitSensor
 
 
 class StoreSensor:
@@ -49,5 +49,5 @@ class StoreSensor:
         return self.sensors[sensor_id].get_visit_count(business_date)
 
     def get_all_traffic(self, business_date:date) -> int:
-        """Return the traffic for one store"""
+        """Return the traffic for all sensors of the store at a date"""
         return sum([ sensor.get_visit_count(business_date) for sensor in self.sensors ])
