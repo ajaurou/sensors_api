@@ -48,6 +48,6 @@ class StoreSensor:
         """Return the traffic sensor at the given sensor_id at a date"""
         return self.sensors[sensor_id].get_visit_count(business_date)
 
-    def get_all_traffic(self, business_date:date) -> int:
+    def get_store_traffic(self, business_date:date) -> int:
         """Return the traffic for all sensors of the store at a date"""
         return sum([ sensor.get_visit_count(business_date) for sensor in self.sensors ])
