@@ -2,7 +2,6 @@
 .idea
 .venv
 .python-version
-pyproject.toml
 .DS_Store
 uv.lock
 *__pycache__*
